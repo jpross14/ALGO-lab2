@@ -1,3 +1,5 @@
+import random
+
 class RandomizedQueue[Item]:
     # construct an empty randomized queue
     def __init__(self):
@@ -13,15 +15,15 @@ class RandomizedQueue[Item]:
 
     # add the item
     def enqueue(self, item: Item) -> None:
-        pass
+        self.deque.append(item)
 
     # remove and return a random item
     def dequeue(self) -> Item:
-        pass
+        return self.radQ.pop(random.choice(self.radQ))
 
     # return a random item (but do not remove it)
     def sample(self) -> Item:
-        pass
+        return random.choice(self.radQ)
 
     # for looping this object will loop over the items in a random order
     def __iter__(self):
@@ -30,7 +32,11 @@ class RandomizedQueue[Item]:
     # return the current item and tick the current item to the next
     # otherwise, raise StopIteration
     def __next__(self) -> Item:
-        pass
+        old_current = self.radQ(0)
+        self.radQ.remove(old_current)  # Remove the element
+        self.radQ.append(1, old_current)  # Append it to the next index
+        return self.radQ(1)
+        
 
     # unit testing (required)
     @staticmethod

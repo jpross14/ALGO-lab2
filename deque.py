@@ -19,7 +19,7 @@ class Deque[Item]:
 
     # add the item to the front
     def add_first(self, item: Item) -> None:
-        self.deque.insert(0, item)
+        self.deque.append(0, item)
 
     # add the item to the back
     def add_last(self, item: Item) -> None:
@@ -39,7 +39,10 @@ class Deque[Item]:
     # return the current item and tick the current item to the next
     # otherwise, raise StopIteration
     def __next__(self) -> Item:
-        pass
+        old_current = self.deque(0)
+        self.deque.remove(old_current)  # Remove the element
+        self.deque.append(1, old_current)  # Append it to the next index
+        return self.deque(1)
 
     # unit testing (required)
     @staticmethod
