@@ -3,52 +3,72 @@
 #
 # For example:
 # d = Deque[int]()
-#
-class Deque[Item]:
-    # construct an empty deque
+
+
+from typing import Generic, TypeVar, Iterator
+
+Item = TypeVar("Item")
+
+class Deque(Generic[Item]):
     def __init__(self):
+        """Construct an empty deque."""
         self.deque: list[Item] = []
 
-    # is the deque empty?
     def is_empty(self) -> bool:
+        """Check if the deque is empty."""
         return len(self.deque) == 0
 
-    # return the number of items on the deque
     def size(self) -> int:
+        """Return the number of items in the deque."""
         return len(self.deque)
 
-    # add the item to the front
     def add_first(self, item: Item) -> None:
-        self.deque.append(0, item)
+        """Add an item to the front of the deque."""
+        self.deque.insert(0, item)  
 
-    # add the item to the back
     def add_last(self, item: Item) -> None:
-        self.deque.append(item)
+        """Add an item to the back of the deque."""
+        self.deque.append(item)  
 
-    # remove and return the item from the front
     def remove_first(self) -> Item:
-        return self.deque.pop(0)
+        """Remove and return the item from the front of the deque."""
+        if self.is_empty():
+            raise IndexError("Cannot remove from an empty deque")
+        return self.deque.pop(0)  
 
-    # remove and return the item from the back
     def remove_last(self) -> Item:
-        return self.deque.pop()
+        """Remove and return the item from the back of the deque."""
+        if self.is_empty():
+            raise IndexError("Cannot remove from an empty deque")
+        return self.deque.pop()  
 
-    def __iter__(self):
-        pass
+    def __iter__(self) -> Iterator[Item]:
+        """Return an iterator for the deque."""
+        self.index = 0  
+        return self
 
-    # return the current item and tick the current item to the next
-    # otherwise, raise StopIteration
     def __next__(self) -> Item:
-        old_current = self.deque(0)
-        self.deque.remove(old_current)  # Remove the element
-        self.deque.append(1, old_current)  # Append it to the next index
-        return self.deque(1)
+        """Return the next item in the deque, or raise StopIteration."""
+        if self.index >= len(self.deque):
+            raise StopIteration  
+        item = self.deque[self.index]
+        self.index += 1
+        return item
 
-    # unit testing (required)
     @staticmethod
     def main():
-        pass
+        d = Deque[int]()  
 
+        d.add_first(10)
+        d.add_last(20)
+        d.add_first(5)
+
+        print("Deque contents:", list(d))  
+
+        print("Removed first:", d.remove_first())  
+        print("Removed last:", d.remove_last())   
+
+        print("Final deque contents:", list(d)) 
 
 if __name__ == "__main__":
     Deque.main()
